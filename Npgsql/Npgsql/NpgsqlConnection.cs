@@ -371,6 +371,7 @@ namespace Npgsql
             return GetSchema(collectionName, null);
         }
 
+
         /// <summary>
         /// Returns the schema collection specified by the collection name filtered by the restrictions.
         /// </summary>
@@ -864,8 +865,7 @@ namespace Npgsql
         {
             get { return (_settings.Pooling && (_settings.MaxPoolSize > 0)); }
         }
-
-
+        
         /// <summary>
         /// The connector object connected to the backend.
         /// </summary>
@@ -1026,17 +1026,7 @@ namespace Npgsql
         [Browsable(false)]
         public ConnectionState FullState
         {
-            get
-            {
-                if(_connector != null && !_disposed)
-                {
-                    return _connector.State;
-                }
-                else
-                {
-                    return ConnectionState.Closed;
-                }
-            }
+            get { return (_connector != null && !_disposed) ? _connector.State : ConnectionState.Closed; }
         }
 
         /// <summary>
@@ -1046,10 +1036,7 @@ namespace Npgsql
         [Browsable(false)]
         public override ConnectionState State
         {
-            get
-            {
-                return (FullState & ConnectionState.Open) == ConnectionState.Open ? ConnectionState.Open : ConnectionState.Closed;
-            }
+            get { return (FullState & ConnectionState.Open) == ConnectionState.Open ? ConnectionState.Open : ConnectionState.Closed; }
         }
 
         /// <summary>
@@ -1057,10 +1044,7 @@ namespace Npgsql
         /// </summary>
         public Version NpgsqlCompatibilityVersion
         {
-            get
-            {
-                return _settings.Compatible;
-            }
+            get { return _settings.Compatible; }
         }
 
         /// <summary>
@@ -1224,7 +1208,9 @@ namespace Npgsql
             get
             {
                 if(string.IsNullOrEmpty(_connectionString))
+                {
                     RefreshConnectionString();
+                }
                 return _settings.ConnectionString;
             }
             set
@@ -1234,14 +1220,7 @@ namespace Npgsql
                 CheckConnectionClosed();
                 NpgsqlEventLog.LogPropertySet(LogLevel.Debug, CLASSNAME, "ConnectionString", value);
                 NpgsqlConnectionStringBuilder builder = cache[value];
-                if(builder == null)
-                {
-                    _settings = new NpgsqlConnectionStringBuilder(value);
-                }
-                else
-                {
-                    _settings = builder.Clone();
-                }
+                _settings = (builder == null) ? new NpgsqlConnectionStringBuilder(value) : builder.Clone();
                 LoadConnectionStringBuilder(value);
             }
         }
