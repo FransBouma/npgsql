@@ -65,6 +65,8 @@ namespace Npgsql
     /// </summary>
 #if WITHDESIGN
     [System.Drawing.ToolboxBitmapAttribute(typeof(NpgsqlConnection))]
+#else
+    [System.ComponentModel.DesignerCategory("Code")]
 #endif
 
     public sealed class NpgsqlConnection : DbConnection, ICloneable

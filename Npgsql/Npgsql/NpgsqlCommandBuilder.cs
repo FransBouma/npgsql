@@ -37,6 +37,7 @@ namespace Npgsql
     ///<summary>
     /// This class is responsible to create database commands for automatic insert, update and delete operations.
     ///</summary>
+    [System.ComponentModel.DesignerCategory("Code")]
     public sealed class NpgsqlCommandBuilder : DbCommandBuilder
     {
         // Logging related values
