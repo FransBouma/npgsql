@@ -42,19 +42,6 @@ using IsolationLevel = System.Data.IsolationLevel;
 namespace Npgsql
 {
     /// <summary>
-    /// Represents the method that handles the <see cref="Npgsql.NpgsqlConnection.Notification">Notice</see> events.
-    /// </summary>
-    /// <param name="sender">The source of the event.</param>
-    /// <param name="e">A <see cref="Npgsql.NpgsqlNoticeEventArgs">NpgsqlNoticeEventArgs</see> that contains the event data.</param>
-    public delegate void NoticeEventHandler(Object sender, NpgsqlNoticeEventArgs e);
-    /// <summary>
-    /// Represents the method that handles the <see cref="Npgsql.NpgsqlConnection.Notification">Notification</see> events.
-    /// </summary>
-    /// <param name="sender">The source of the event.</param>
-    /// <param name="e">A <see cref="Npgsql.NpgsqlNotificationEventArgs">NpgsqlNotificationEventArgs</see> that contains the event data.</param>
-    public delegate void NotificationEventHandler(Object sender, NpgsqlNotificationEventArgs e);
-
-    /// <summary>
     /// This class represents a connection to a
     /// PostgreSQL server.
     /// </summary>
@@ -68,9 +55,9 @@ namespace Npgsql
         #region Statics
         // Logging related values
         private static readonly String CLASSNAME = MethodBase.GetCurrentMethod().DeclaringType.Name;
-        private static readonly ResourceManager resman = new ResourceManager(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ResourceManager _resman = new ResourceManager(MethodBase.GetCurrentMethod().DeclaringType);
         // Parsed connection string cache
-        private static readonly Cache<NpgsqlConnectionStringBuilder> cache = new Cache<NpgsqlConnectionStringBuilder>();
+        private static readonly Cache<NpgsqlConnectionStringBuilder> _cache = new Cache<NpgsqlConnectionStringBuilder>();
         #endregion
 
         #region Events
@@ -201,7 +188,7 @@ namespace Npgsql
             CheckConnectionOpen();
             if (_connector.Transaction != null)
             {
-                throw new InvalidOperationException(resman.GetString("Exception_NoNestedTransactions"));
+                throw new InvalidOperationException(_resman.GetString("Exception_NoNestedTransactions"));
             }
             return new NpgsqlTransaction(this, level);
         }
@@ -226,12 +213,12 @@ namespace Npgsql
             // Check if there is any missing argument.
             if(!_settings.ContainsKey(Keywords.Host))
             {
-                throw new ArgumentException(resman.GetString("Exception_MissingConnStrArg"),
+                throw new ArgumentException(_resman.GetString("Exception_MissingConnStrArg"),
                                             Keywords.Host.ToString());
             }
             if(!_settings.ContainsKey(Keywords.UserName) && !_settings.ContainsKey(Keywords.IntegratedSecurity))
             {
-                throw new ArgumentException(resman.GetString("Exception_MissingConnStrArg"),
+                throw new ArgumentException(_resman.GetString("Exception_MissingConnStrArg"),
                                             Keywords.UserName.ToString());
             }
 
@@ -284,7 +271,7 @@ namespace Npgsql
             }
             if (string.IsNullOrEmpty(dbName))
             {
-                throw new ArgumentOutOfRangeException("dbName", dbName, String.Format(resman.GetString("Exception_InvalidDbName")));
+                throw new ArgumentOutOfRangeException("dbName", dbName, String.Format(_resman.GetString("Exception_InvalidDbName")));
             }
 
             Close();
@@ -694,7 +681,7 @@ namespace Npgsql
             }
             foreach(string key in _settings.Keys)
             {
-                NpgsqlEventLog.LogMsg(resman, "Log_ConnectionStringValues", LogLevel.Debug, key, _settings[key]);
+                NpgsqlEventLog.LogMsg(_resman, "Log_ConnectionStringValues", LogLevel.Debug, key, _settings[key]);
             }
         }
 
@@ -705,11 +692,11 @@ namespace Npgsql
         /// <param name="connectionString">The connection string to load the builder from</param>
         private void LoadConnectionStringBuilder(string connectionString)
         {
-            NpgsqlConnectionStringBuilder newSettings = cache[connectionString];
+            NpgsqlConnectionStringBuilder newSettings = _cache[connectionString];
             if(newSettings == null)
             {
                 newSettings = new NpgsqlConnectionStringBuilder(connectionString);
-                cache[connectionString] = newSettings;
+                _cache[connectionString] = newSettings;
             }
 
             LoadConnectionStringBuilder(newSettings);
@@ -774,7 +761,7 @@ namespace Npgsql
 
             if(_postponingClose || _connector == null)
             {
-                throw new InvalidOperationException(resman.GetString("Exception_ConnNotOpen"));
+                throw new InvalidOperationException(_resman.GetString("Exception_ConnNotOpen"));
             }
         }
 
@@ -792,7 +779,7 @@ namespace Npgsql
             }
             if(_connector != null)
             {
-                throw new InvalidOperationException(resman.GetString("Exception_ConnOpen"));
+                throw new InvalidOperationException(_resman.GetString("Exception_ConnOpen"));
             }
         }
 
@@ -1219,7 +1206,7 @@ namespace Npgsql
                 // we cannot change it while we own a connector.
                 CheckConnectionClosed();
                 NpgsqlEventLog.LogPropertySet(LogLevel.Debug, CLASSNAME, "ConnectionString", value);
-                NpgsqlConnectionStringBuilder builder = cache[value];
+                NpgsqlConnectionStringBuilder builder = _cache[value];
                 _settings = (builder == null) ? new NpgsqlConnectionStringBuilder(value) : builder.Clone();
                 LoadConnectionStringBuilder(value);
             }

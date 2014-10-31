@@ -44,6 +44,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug-net45\Npgsql.xml</DocumentationFile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release-net45|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -54,6 +55,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release-net45\Npgsql.xml</DocumentationFile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-net40|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -67,6 +69,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <NoWarn>
     </NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release-net40|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -77,6 +80,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release-net40\Npgsql.xml</DocumentationFile>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-net35|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -88,6 +92,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug-net35\Npgsql.xml</DocumentationFile>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release-net35|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -98,6 +103,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release-net35\Npgsql.xml</DocumentationFile>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-net20|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -111,6 +117,7 @@
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <NoWarn>
     </NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release-net20|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -120,7 +127,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release-net20\Npgsql.xml</DocumentationFile>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -142,6 +150,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Npgsql\Enums.cs" />
     <Compile Include="NpgsqlTypes\ArrayHandling.cs" />
     <Compile Include="NpgsqlTypes\BitString.cs" />
     <Compile Include="NpgsqlTypes\DateDatatypes.cs" />
@@ -160,6 +169,7 @@
     <Compile Include="NpgsqlTypes\NpgsqlTypeMappings.cs" />
     <Compile Include="NpgsqlTypes\NpgsqlTypes.cs" />
     <Compile Include="NpgsqlTypes\NpgsqlTypesHelper.cs" />
+    <Compile Include="Npgsql\Delegates.cs" />
     <Compile Include="Npgsql\NpgsqlQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Npgsql\Cache.cs" />
@@ -174,22 +184,12 @@
     <Compile Include="Npgsql\NpgsqlBind.cs" />
     <Compile Include="Npgsql\NpgsqlCancelRequest.cs" />
     <Compile Include="Npgsql\NpgsqlClosedState.cs" />
-    <Compile Include="Npgsql\NpgsqlCommand.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Npgsql\NpgsqlCommand.PrepareExecute.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Npgsql\NpgsqlCommand.Rewrite.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Npgsql\NpgsqlCommandBuilder.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Npgsql\NpgsqlCommand.cs" />
+    <Compile Include="Npgsql\NpgsqlCommand.PrepareExecute.cs" />
+    <Compile Include="Npgsql\NpgsqlCommand.Rewrite.cs" />
+    <Compile Include="Npgsql\NpgsqlCommandBuilder.cs" />
     <Compile Include="Npgsql\NpgsqlConnectedState.cs" />
-    <Compile Include="Npgsql\NpgsqlConnection.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Npgsql\NpgsqlConnection.cs" />
     <Compile Include="Npgsql\NpgsqlConnectionStringBuilder.cs" />
     <Compile Include="Npgsql\NpgsqlConnector.cs" />
     <Compile Include="Npgsql\NpgsqlConnectorPool.cs" />
@@ -201,9 +201,7 @@
     <Compile Include="Npgsql\NpgsqlCopyOutState.cs" />
     <Compile Include="Npgsql\NpgsqlCopyOutStream.cs" />
     <Compile Include="Npgsql\NpgsqlCopySerializer.cs" />
-    <Compile Include="Npgsql\NpgsqlDataAdapter.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Npgsql\NpgsqlDataAdapter.cs" />
     <Compile Include="Npgsql\NpgsqlDataReader.cs" />
     <Compile Include="Npgsql\NpgsqlDescribe.cs" />
     <Compile Include="Npgsql\NpgsqlError.cs" />
